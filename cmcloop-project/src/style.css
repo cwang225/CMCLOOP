@@ -1,156 +1,182 @@
 *{
 
-margin:0;
+  margin:0;
 
-padding:0;
+  padding:0;
 
-box-sizing:border-box;
+  box-sizing:border-box;
 
 }
 
 body{
 
-background:#080808;
+  background:#080808;
 
-color:white;
+  color:white;
 
-font-family:Inter,sans-serif;
+  overflow-x:hidden;
 
-overflow-x:hidden;
+}
+.cantarell-regular {
+  font-family: "Cantarell", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
 
+.limelight-regular {
+  font-family: "Limelight", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.m-plus-1p-regular {
+  font-family: "M PLUS 1p", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .hero{
 
-height:100vh;
+  height:100vh;
 
-display:flex;
+  display:flex;
 
-justify-content:center;
+  justify-content:center;
 
-align-items:center;
+  align-items:center;
 
-text-align:center;
+  text-align:center;
 
 }
 
 .hero-content{
 
-max-width:700px;
+  max-width:700px;
 
 }
 
 h1{
 
-font-size:clamp(5rem,12vw,10rem);
+  font-size:clamp(5rem,20vw,10rem);
+  letter-spacing:-0.05em;
+  font-family:"Limelight", sans-serif;
 
-letter-spacing:-0.05em;
+}
 
+h2 {
+  font-family: "M PLUS 1p", sans-serif;
+}
+
+h3 {
+  font-family: "M PLUS 1p", sans-serif;
+}
+
+p {
+  color: white;
+  font-family: "M PLUS 1p", sans-serif;
 }
 
 .description{
 
-margin-top:2rem;
+  margin-top:2rem;
 
-opacity:.7;
-
-line-height:1.7;
+  line-height:1.7;
 
 }
 
 .button{
 
-display:inline-block;
+  display:inline-block;
 
-margin-top:3rem;
+  margin-top:3rem;
 
-padding:1rem 2rem;
+  padding:1rem 2rem;
 
-border:1px solid white;
+  border:1px solid white;
 
-color:white;
+  color:white;
 
-text-decoration:none;
+  text-decoration:none;
 
-transition:.4s;
+  transition:.4s;
 
 }
 
 .button:hover{
 
-background:white;
+  background:white;
 
-color:black;
+  color:black;
 
 }
 
 section{
 
-padding:12rem 10vw;
+  padding:12rem 10vw;
 
-max-width:900px;
+  max-width:900px;
 
-margin:auto;
+  margin:auto;
 
 }
 
 #site{
 
-display:none;
+  display:none;
 
 }
 
 #intro{
 
-position:fixed;
+  position:fixed;
 
-top:0;
+  top:0;
 
-left:0;
+  left:0;
 
-width:100%;
+  width:100%;
 
-height:100%;
+  height:100%;
 
-background:black;
+  background:black;
 
-overflow:hidden;
+  overflow:hidden;
 
-display:flex;
+  display:flex;
 
-justify-content:center;
+  justify-content:center;
 
-align-items:center;
+  align-items:center;
 
 }
 
 #intro-video{
 
-width:100%;
+  width:100%;
 
-height:100%;
+  height:100%;
 
-object-fit:cover;
+  object-fit:cover;
 
 }
 
 .overlay{
 
-position:absolute;
+  position:absolute;
 
-z-index:10;
+  z-index:10;
 
-color:white;
+  color:white;
 
-text-align:center;
+  text-align:center;
 
 }
 
 .fade{
 
-opacity:0;
+  opacity:0;
 
-transition:1s;
+  transition:1s;
 
 }
 

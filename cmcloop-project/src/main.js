@@ -1,8 +1,13 @@
 import "./style.css"
 import "./background.js"
+import "./mediaDisplay.js"
 
 document.querySelector("#app").innerHTML = `
-
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Limelight&family=Plaster&display=swap" rel="stylesheet">
+</head>
 <div id="intro">
 
     <video
@@ -29,7 +34,7 @@ document.querySelector("#app").innerHTML = `
         <div class="hero-content">
 
             <p class="eyebrow">
-                Johns Hopkins University
+                JHU Creative Media Center presents
             </p>
 
             <h1 id="loop-title">
@@ -45,62 +50,53 @@ document.querySelector("#app").innerHTML = `
 
             </p>
 
-            <a
-                href="#submit"
-                class="button">
-
-                Submit Work
-
-            </a>
-
         </div>
 
     </header>
 
     <section class="about">
 
-    <h2>
+        <h2>
 
-    What is LOOP?
+        What is LOOP?
 
-    </h2>
+        </h2>
 
-    <p>
+        <p>
 
-    LOOP frames and explores multimedia
-    production past and present...
+        LOOP frames and explores multimedia
+        production past and present...
 
-    </p>
+        </p>
 
     </section>
 
-    <section
-    id="submit">
+    <section id="submit">
 
-    <h2>
+        <h2>
 
-    Submit Work
+        Submit Work
 
-    </h2>
+        </h2>
 
-    <p>
+        <p>
 
-    Student
+        Student
 
-    Faculty
+        Faculty
 
-    Alumni
+        Alumni
 
-    </p>
+        </p>
 
-    <a
-    class="button"
+        <a
+        class="button"
 
-    href="https://docs.google.com/forms/d/e/1FAIpQLSfu_jv613FNZqcllwYXLcni7fPRFv6mFQRqSQZucV_j6D06Bw/viewform?usp=publish-editor">
+        href="https://docs.google.com/forms/d/e/1FAIpQLSfu_jv613FNZqcllwYXLcni7fPRFv6mFQRqSQZucV_j6D06Bw/viewform?usp=publish-editor">
 
-    Open Submission Form
+        Open Submission Form
 
-    </a>
+        </a>
 
     </section>
 </div>
@@ -110,20 +106,6 @@ const intro = document.querySelector("#intro")
 
 const site = document.querySelector("#site")
 
-intro.addEventListener("click", () => {
-
-    intro.classList.add("fade")
-
-    setTimeout(() => {
-
-        intro.remove()
-
-        site.style.display = "block"
-
-    },1000)
-
-})
-
 function enterSite() {
     intro.classList.add("fade")
     setTimeout(() => {
@@ -132,6 +114,7 @@ function enterSite() {
     }, 1000)
 }
 
+// listeners for the intro page to lead into the actual site
 intro.addEventListener("click", enterSite)
 window.addEventListener("keydown", enterSite)
 
