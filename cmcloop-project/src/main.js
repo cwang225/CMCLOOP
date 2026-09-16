@@ -1,6 +1,6 @@
 import "./style.css"
-import "./background.js"
-import "./mediaDisplay.js"
+import { initBackground } from "./background.js"
+import { initMediaDisplay, playHeroMedia } from "./mediaDisplay.js"
 
 document.querySelector("#app").innerHTML = `
 <head>
@@ -29,7 +29,29 @@ document.querySelector("#app").innerHTML = `
 
 <div id="site">
 
+    <canvas id="background"></canvas>
+
+    <div class="site-dim"></div>
+
     <header class="hero">
+
+        <div class="hero-rects" aria-hidden="true">
+            <div class="hero-rect" data-media-slot>
+                <video class="hero-rect-media" muted loop playsinline></video>
+            </div>
+            <div class="hero-rect" data-media-slot>
+                <video class="hero-rect-media" muted loop playsinline></video>
+            </div>
+            <div class="hero-rect" data-media-slot>
+                <video class="hero-rect-media" muted loop playsinline></video>
+            </div>
+            <div class="hero-rect" data-media-slot>
+                <video class="hero-rect-media" muted loop playsinline></video>
+            </div>
+            <div class="hero-rect" data-media-slot>
+                <video class="hero-rect-media" muted loop playsinline></video>
+            </div>
+        </div>
 
         <div class="hero-content">
 
@@ -111,6 +133,7 @@ function enterSite() {
     setTimeout(() => {
         intro.remove()
         site.style.display = "block"
+        playHeroMedia()
     }, 1000)
 }
 
@@ -118,42 +141,33 @@ function enterSite() {
 intro.addEventListener("click", enterSite)
 window.addEventListener("keydown", enterSite)
 
+initBackground()
+initMediaDisplay()
+
 const title = document.querySelector("#loop-title");
+const heroRects = document.querySelectorAll(".hero-rect");
 
+function followPointer(element, event, amount) {
+    const bounds = element.getBoundingClientRect();
+    const centerX = bounds.left + bounds.width / 2;
+    const centerY = bounds.top + bounds.height / 2;
+    const distanceX = event.clientX - centerX;
+    const distanceY = event.clientY - centerY;
+    const distance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
 
-window.addEventListener("mousemove", (e)=>{
-
-    const rect = title.getBoundingClientRect();
-
-
-    const titleX = rect.left + rect.width / 2;
-    const titleY = rect.top + rect.height / 2;
-
-
-    const distanceX = e.clientX - titleX;
-    const distanceY = e.clientY - titleY;
-
-
-    const distance = Math.sqrt(
-        distanceX ** 2 + distanceY ** 2
-    );
-
-
-    if(distance < 300){
-
-        title.style.transform = `
+    if (distance < 300) {
+        element.style.transform = `
             translate(
-                ${distanceX * 0.08}px,
-                ${distanceY * 0.08}px
+                ${distanceX * amount}px,
+                ${distanceY * amount}px
             )
         `;
-
     } else {
-
-        title.style.transform = `
-            translate(0,0)
-        `;
-
+        element.style.transform = `translate(0,0)`;
     }
+}
 
+window.addEventListener("mousemove", (e) => {
+    followPointer(title, e, 0.08);
+    heroRects.forEach((rect) => followPointer(rect, e, 0.03));
 });
