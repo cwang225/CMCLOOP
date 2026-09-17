@@ -15,7 +15,7 @@ body{
   color:white;
 
   overflow-x:hidden;
-
+  cursor: url("./assets/quackCursor.png") 16 16, auto;
 }
 .cantarell-regular {
   font-family: "Cantarell", sans-serif;
@@ -53,6 +53,46 @@ body{
 
 }
 
+.scroll-indicator{
+  position:absolute;
+  left:50%;
+  bottom:2rem;
+  transform:translateX(-50%);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:2rem;
+  height:2rem;
+  z-index:3;
+  opacity:1;
+  transition:opacity 0.3s ease, transform 0.3s ease;
+  animation:scroll-bob 1.5s ease-in-out infinite;
+}
+
+.scroll-arrow{
+  width:0.9rem;
+  height:0.9rem;
+  border-right:2px solid #ffffff;
+  border-bottom:2px solid #ffffff;
+  transform:rotate(45deg);
+  display:block;
+  opacity:1;
+}
+
+@keyframes scroll-bob {
+  0%, 100% {
+    transform:translateX(-50%) translateY(0);
+  }
+  50% {
+    transform:translateX(-50%) translateY(8px);
+  }
+}
+
+.scroll-indicator.is-hidden {
+  opacity:0;
+  transform:translateX(-50%) translateY(12px);
+}
+
 .hero-rects{
 
   position:absolute;
@@ -88,6 +128,8 @@ body{
   height:100%;
 
   object-fit:cover;
+
+  border:0;
 
 }
 
@@ -181,11 +223,19 @@ p {
 
   border:1px solid white;
 
+  border-radius:999px;
+
   color:white;
 
   text-decoration:none;
 
-  transition:.4s;
+  transition:background 0.4s, color 0.4s;
+
+}
+
+#submit .button{
+
+  align-self:center;
 
 }
 
@@ -203,12 +253,67 @@ section{
 
   z-index:3;
 
-  padding:12rem 10vw;
+  padding:6rem 6vw 8rem;
 
-  max-width:900px;
+  width:min(1200px, 92vw);
 
-  margin:auto;
+  max-width:1200px;
 
+  margin:0 auto;
+
+  text-align:left;
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:flex-start;
+
+  justify-content:flex-start;
+
+}
+
+#submit{
+
+  margin-top:10rem;
+
+  padding-top:8rem;
+
+}
+
+.about :is(h2, p),
+#submit :is(h2, p, .button){
+  opacity:0;
+  transform:translateY(1.25rem);
+  transition:opacity 0.9s ease, transform 0.9s ease;
+}
+
+.about.is-visible h2,
+#submit.is-visible h2{
+  opacity:1;
+  transform:none;
+}
+
+.about.is-visible p,
+#submit.is-visible p{
+  opacity:1;
+  transform:none;
+  transition-delay:0.15s;
+}
+
+#submit.is-visible .button{
+  opacity:1;
+  transform:none;
+  transition-delay:0.3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about :is(h2, p),
+  #submit :is(h2, p, .button){
+    opacity:1;
+    transform:none;
+    transition:none;
+  }
 }
 
 #site{

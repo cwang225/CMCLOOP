@@ -74,20 +74,26 @@ document.querySelector("#app").innerHTML = `
 
         </div>
 
+        <div class="scroll-indicator" aria-label="Scroll down">
+            <span class="scroll-arrow"></span>
+        </div>
+
     </header>
 
     <section class="about">
 
         <h2>
 
-        What is LOOP?
+        Who are we?
 
         </h2>
+        <br>
 
         <p>
 
-        LOOP frames and explores multimedia
-        production past and present...
+        LOOP is organized, maintained, and run by the JHU Creative Media Center (CMC).
+        LOOP hopes to showcase the amazing art of our students. The CMC supports student
+        innovation and creativity through our wide variety of resources and opportunities.
 
         </p>
 
@@ -97,17 +103,15 @@ document.querySelector("#app").innerHTML = `
 
         <h2>
 
-        Submit Work
+        Submit your work!
 
         </h2>
+        <br>
 
         <p>
 
-        Student
-
-        Faculty
-
-        Alumni
+            Be a part of LOOP! Submit your work by clicking on the button below. Students, faculty, and alumni are all welcome to submit!
+            We look forward to seeing your work!
 
         </p>
 
@@ -128,12 +132,27 @@ const intro = document.querySelector("#intro")
 
 const site = document.querySelector("#site")
 
+function initSectionReveal() {
+    const sections = document.querySelectorAll(".about, #submit")
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            entry.target.classList.toggle("is-visible", entry.isIntersecting)
+        })
+    }, {
+        threshold: 0.2,
+        rootMargin: "-8% 0px",
+    })
+
+    sections.forEach((section) => observer.observe(section))
+}
+
 function enterSite() {
     intro.classList.add("fade")
     setTimeout(() => {
         intro.remove()
         site.style.display = "block"
         playHeroMedia()
+        initSectionReveal()
     }, 1000)
 }
 
@@ -146,6 +165,17 @@ initMediaDisplay()
 
 const title = document.querySelector("#loop-title");
 const heroRects = document.querySelectorAll(".hero-rect");
+const scrollIndicator = document.querySelector(".scroll-indicator");
+
+function updateScrollIndicator() {
+    if (!scrollIndicator) return
+
+    if (window.scrollY > 30) {
+        scrollIndicator.classList.add("is-hidden")
+    } else {
+        scrollIndicator.classList.remove("is-hidden")
+    }
+}
 
 function followPointer(element, event, amount) {
     const bounds = element.getBoundingClientRect();
@@ -171,3 +201,6 @@ window.addEventListener("mousemove", (e) => {
     followPointer(title, e, 0.08);
     heroRects.forEach((rect) => followPointer(rect, e, 0.03));
 });
+
+window.addEventListener("scroll", updateScrollIndicator, { passive: true });
+updateScrollIndicator();

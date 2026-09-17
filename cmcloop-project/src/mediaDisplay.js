@@ -1,50 +1,120 @@
 import { supabase } from "./supabaseClient.js"
 
-const HERO_MEDIA_TABLE = "hero_media"
-const HERO_MEDIA_URL_COLUMN = "url"
+const MEDIA_TABLE = "LOOPMedia"
 
 function slots() {
   return [...document.querySelectorAll("[data-media-slot]")]
 }
 
-function videoForSlot(slot) {
-  let video = slot.querySelector("video")
-
-  if (!video) {
-    video = document.createElement("video")
-    video.className = "hero-rect-media"
-    video.muted = true
-    video.loop = true
-    video.playsInline = true
-    video.setAttribute("playsinline", "")
-    video.setAttribute("muted", "")
-    slot.appendChild(video)
-  }
-
-  return video
-}
-
 function mediaUrl(item) {
   if (!item) return ""
-  if (typeof item === "string") return item
-  return item[HERO_MEDIA_URL_COLUMN] || item.video_url || item.src || ""
+
+  const raw = item.video_url
+  if (!raw) return ""
+
+  let url = ""
+  if (typeof raw === "string") {
+    try {
+      const parsed = JSON.parse(raw)
+      url = parsed.url || raw
+    } catch {
+      url = raw
+    }
+  } else {
+    url = raw.url || ""
+  }
+
+  url = String(url).trim()
+  if (!url) return ""
+  if (!/^[a-z][a-z0-9+.-]*:/i.test(url)) {
+    url = `https://${url}`
+  }
+  return url
+}
+
+function youtubeId(url) {
+  try {
+    const parsed = new URL(url)
+    if (parsed.hostname.includes("youtu.be")) {
+      return parsed.pathname.split("/").filter(Boolean)[0] || ""
+    }
+
+    const fromQuery = parsed.searchParams.get("v")
+    if (fromQuery) return fromQuery
+
+    const embedMatch = parsed.pathname.match(/\/embed\/([^/]+)/)
+    return embedMatch?.[1] || ""
+  } catch {
+    return ""
+  }
+}
+
+function youtubeEmbedUrl(id) {
+  const params = new URLSearchParams({
+    autoplay: "1",
+    mute: "1",
+    loop: "1",
+    playlist: id,
+    controls: "0",
+    modestbranding: "1",
+    playsinline: "1",
+    rel: "0",
+  })
+  return `https://www.youtube.com/embed/${id}?${params.toString()}`
+}
+
+function clearSlotMedia(slot) {
+  slot.querySelectorAll("video, iframe").forEach((node) => node.remove())
+  slot.classList.remove("has-media")
+}
+
+function fillYoutubeSlot(slot, id) {
+  const iframe = document.createElement("iframe")
+  iframe.className = "hero-rect-media"
+  iframe.src = youtubeEmbedUrl(id)
+  iframe.allow = "autoplay; encrypted-media"
+  iframe.setAttribute("allowfullscreen", "")
+  iframe.title = slot.dataset.artist || "LOOP media"
+  slot.appendChild(iframe)
+  slot.classList.add("has-media")
+}
+
+function fillVideoSlot(slot, url) {
+  const video = document.createElement("video")
+  video.className = "hero-rect-media"
+  video.muted = true
+  video.loop = true
+  video.playsInline = true
+  video.setAttribute("playsinline", "")
+  video.setAttribute("muted", "")
+  video.src = url
+  slot.appendChild(video)
+  slot.classList.add("has-media")
+  video.play().catch(() => {})
 }
 
 export function fillHeroMedia(items = []) {
   slots().forEach((slot, index) => {
-    const url = mediaUrl(items[index])
-    const video = videoForSlot(slot)
+    const item = items[index]
+    const url = mediaUrl(item)
 
-    if (!url) {
-      video.removeAttribute("src")
-      video.load()
-      slot.classList.remove("has-media")
+    clearSlotMedia(slot)
+
+    if (item?.artist_name) {
+      slot.dataset.artist = item.artist_name
+    } else {
+      delete slot.dataset.artist
+    }
+
+    if (!url) return
+
+    const id = youtubeId(url)
+    if (id) {
+      fillYoutubeSlot(slot, id)
       return
     }
 
-    video.src = url
-    slot.classList.add("has-media")
-    video.play().catch(() => {})
+    fillVideoSlot(slot, url)
   })
 }
 
@@ -52,11 +122,16 @@ async function fetchHeroMediaFromDatabase() {
   if (!supabase) return []
 
   const { data, error } = await supabase
-    .from(HERO_MEDIA_TABLE)
-    .select(HERO_MEDIA_URL_COLUMN)
+    .from(MEDIA_TABLE)
+    .select("id, video_url, artist_name, created_at")
+    .order("id", { ascending: true })
     .limit(5)
 
-  if (error) return []
+  if (error) {
+    console.warn("LOOPMedia could not be loaded:", error.message)
+    return []
+  }
+
   return data ?? []
 }
 
@@ -64,6 +139,9 @@ export function playHeroMedia() {
   slots().forEach((slot) => {
     const video = slot.querySelector("video")
     if (video?.src) video.play().catch(() => {})
+
+    const iframe = slot.querySelector("iframe")
+    if (iframe?.src) iframe.src = iframe.src
   })
 }
 
