@@ -1,13 +1,15 @@
 import "./style.css"
 import { initBackground } from "./background.js"
 import { initMediaDisplay, playHeroMedia } from "./mediaDisplay.js"
+import cutieQuack from "./assets/cutieQuack.png"
 
 document.querySelector("#app").innerHTML = `
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Limelight&family=Plaster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Limelight&family=M+PLUS+1p&display=swap" rel="stylesheet">
 </head>
+
 <div id="intro">
 
     <video
@@ -97,6 +99,13 @@ document.querySelector("#app").innerHTML = `
 
         </p>
 
+        <figure class="about-image-wrap">
+            <div class="about-image" role="img" aria-label="Image placeholder">
+                <img src="${cutieQuack}" alt="Cutie Quack">
+            </div>
+            <canvas id="heart-layer"></canvas>
+        </figure>
+
     </section>
 
     <section id="submit">
@@ -114,7 +123,8 @@ document.querySelector("#app").innerHTML = `
             We look forward to seeing your work!
 
         </p>
-
+        <br>
+        <br>
         <a
         class="button"
 
@@ -125,6 +135,13 @@ document.querySelector("#app").innerHTML = `
         </a>
 
     </section>
+
+    <footer class="site-footer">
+        <p class="footer-message">
+            LOOP is presented by the JHU Creative Media Center.
+            Come by, say hello, and share what you are making.
+        </p>
+    </footer>
 </div>
 `
 
