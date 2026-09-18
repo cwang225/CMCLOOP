@@ -231,6 +231,7 @@ p {
   color:white;
 
   text-decoration:none;
+  font-family: "Fira Sans", sans-serif;
 
   transition:background 0.4s, color 0.4s;
 
