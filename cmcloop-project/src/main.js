@@ -20,6 +20,8 @@ document.querySelector("#app").innerHTML = `
         
         <p>Click anywhere to enter</p>
     </div>
+
+    <p class="intro-corner">Background code from Generative Gestaltung – Creative Coding im Web</p>
 </div>
 
 <div id="site">
