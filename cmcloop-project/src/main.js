@@ -1,6 +1,7 @@
 import "./style.css"
 import { initBackground } from "./background.js"
 import { initMediaDisplay, playHeroMedia } from "./mediaDisplay.js"
+import { initScribble } from "./scribble.js"
 import cutieQuack from "./assets/cutieQuack.png"
 
 document.querySelector("#app").innerHTML = `
@@ -12,15 +13,7 @@ document.querySelector("#app").innerHTML = `
 
 <div id="intro">
 
-    <video
-        id="intro-video"
-        autoplay
-        muted
-        playsinline>
-
-        <source src="/cruz_signal_noise.mp4" type="video/mp4">
-
-    </video>
+    <div id="intro-scribble"></div>
 
     <div class="overlay">
         <h1>LOOP</h1>
@@ -30,6 +23,8 @@ document.querySelector("#app").innerHTML = `
 </div>
 
 <div id="site">
+
+    <div class="page-texture" aria-hidden="true"></div>
 
     <canvas id="background"></canvas>
 
@@ -148,6 +143,7 @@ document.querySelector("#app").innerHTML = `
 const intro = document.querySelector("#intro")
 
 const site = document.querySelector("#site")
+const scribble = initScribble(document.querySelector("#intro-scribble"))
 
 function initSectionReveal() {
     const sections = document.querySelectorAll(".about, #submit")
@@ -165,6 +161,7 @@ function initSectionReveal() {
 
 function enterSite() {
     intro.classList.add("fade")
+    scribble.remove()
     setTimeout(() => {
         intro.remove()
         site.style.display = "block"

@@ -6,6 +6,14 @@ function slots() {
   return [...document.querySelectorAll("[data-media-slot]")]
 }
 
+function joinUrl(base, path) {
+  const root = String(base || "").trim().replace(/\/+$/, "")
+  const objectPath = String(path || "").trim().replace(/^\/+/, "")
+  if (!root) return objectPath
+  if (!objectPath) return root
+  return `${root}/${objectPath}`
+}
+
 function mediaUrl(item) {
   if (!item) return ""
 
@@ -16,12 +24,18 @@ function mediaUrl(item) {
   if (typeof raw === "string") {
     try {
       const parsed = JSON.parse(raw)
-      url = parsed.url || raw
+      url = joinUrl(
+        parsed.url || parsed.publicUrl || parsed.public_url,
+        parsed.path || parsed.key || parsed.file || parsed.filename
+      ) || raw
     } catch {
       url = raw
     }
   } else {
-    url = raw.url || ""
+    url = joinUrl(
+      raw.url || raw.publicUrl || raw.public_url,
+      raw.path || raw.key || raw.file || raw.filename
+    )
   }
 
   url = String(url).trim()
@@ -30,6 +44,15 @@ function mediaUrl(item) {
     url = `https://${url}`
   }
   return url
+}
+
+function isYoutubeUrl(url) {
+  try {
+    const host = new URL(url).hostname
+    return host.includes("youtube.com") || host.includes("youtu.be")
+  } catch {
+    return false
+  }
 }
 
 function youtubeId(url) {
@@ -63,6 +86,20 @@ function youtubeEmbedUrl(id) {
   return `https://www.youtube.com/embed/${id}?${params.toString()}`
 }
 
+function looksLikeVideoFile(url) {
+  try {
+    const parsed = new URL(url)
+    const host = parsed.hostname
+    const path = parsed.pathname.toLowerCase()
+    if (host.endsWith(".r2.dev") || host.includes("r2.cloudflarestorage.com")) {
+      return path.length > 1
+    }
+    return /\.(mp4|webm|mov|m4v|ogg)(\?|$)/i.test(path)
+  } catch {
+    return false
+  }
+}
+
 function clearSlotMedia(slot) {
   slot.querySelectorAll("video, iframe").forEach((node) => node.remove())
   slot.classList.remove("has-media")
@@ -84,7 +121,9 @@ function fillVideoSlot(slot, url) {
   video.className = "hero-rect-media"
   video.muted = true
   video.loop = true
+  video.autoplay = true
   video.playsInline = true
+  video.preload = "auto"
   video.setAttribute("playsinline", "")
   video.setAttribute("muted", "")
   video.src = url
@@ -108,9 +147,16 @@ export function fillHeroMedia(items = []) {
 
     if (!url) return
 
-    const id = youtubeId(url)
-    if (id) {
-      fillYoutubeSlot(slot, id)
+    if (isYoutubeUrl(url)) {
+      const id = youtubeId(url)
+      if (id) {
+        fillYoutubeSlot(slot, id)
+        return
+      }
+    }
+
+    if (!looksLikeVideoFile(url)) {
+      console.warn("LOOPMedia row is missing a video file path:", url)
       return
     }
 

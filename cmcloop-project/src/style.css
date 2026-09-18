@@ -10,12 +10,12 @@
 
 body{
 
-  background:#080808;
-
+  background:#111;
   color:white;
 
   overflow-x:hidden;
   cursor: url("./assets/quackCursor.png") 16 16, auto;
+
 }
 
 .fira-sans-extralight {
@@ -357,6 +357,18 @@ section{
 
 }
 
+.page-texture{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background-image:url("./assets/textureScreen.jpeg");
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  opacity:0.1;
+}
+
 .site-footer{
   position:relative;
   z-index:3;
@@ -421,13 +433,27 @@ section{
 
 }
 
-#intro-video{
+#intro-scribble{
+
+  position:absolute;
+
+  inset:0;
 
   width:100%;
 
   height:100%;
 
-  object-fit:cover;
+  z-index:0;
+
+}
+
+#intro-scribble canvas{
+
+  display:block;
+
+  width:100%;
+
+  height:100%;
 
 }
 
@@ -482,13 +508,8 @@ section{
   position: absolute;
   inset: 0;
   z-index: 2;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.3);
   pointer-events: none;
-}
-
-body {
-  background:black;
-  color:white;
 }
 
 #loop-title {
