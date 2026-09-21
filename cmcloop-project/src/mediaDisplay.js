@@ -132,6 +132,59 @@ function fillVideoSlot(slot, url) {
   video.play().catch(() => {})
 }
 
+const ROTATE_MS = 30_000
+
+let mediaLibrary = []
+let currentItems = []
+let rotateTimer = null
+let siteReady = false
+
+function isPlayable(item) {
+  const url = mediaUrl(item)
+  if (!url) return false
+  if (isYoutubeUrl(url)) return Boolean(youtubeId(url))
+  return looksLikeVideoFile(url)
+}
+
+function shuffle(items) {
+  const copy = [...items]
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1))
+    const swap = copy[i]
+    copy[i] = copy[j]
+    copy[j] = swap
+  }
+  return copy
+}
+
+function pickRandomItems(items, count, previous = []) {
+  if (!items.length || count <= 0) return []
+
+  if (items.length <= count) {
+    const next = shuffle(items)
+    if (
+      previous.length &&
+      next.length > 1 &&
+      next.every((item, index) => item.id === previous[index]?.id)
+    ) {
+      const swap = next[0]
+      next[0] = next[1]
+      next[1] = swap
+    }
+    return next
+  }
+
+  const previousIds = new Set(previous.map((item) => item.id))
+  const unused = items.filter((item) => !previousIds.has(item.id))
+
+  if (unused.length >= count) {
+    return shuffle(unused).slice(0, count)
+  }
+
+  const used = items.filter((item) => previousIds.has(item.id))
+  return [...shuffle(unused), ...shuffle(used)].slice(0, count)
+}
+
 export function fillHeroMedia(items = []) {
   slots().forEach((slot, index) => {
     const item = items[index]
@@ -164,6 +217,20 @@ export function fillHeroMedia(items = []) {
   })
 }
 
+function showRandomHeroMedia() {
+  currentItems = pickRandomItems(mediaLibrary, slots().length, currentItems)
+  fillHeroMedia(currentItems)
+}
+
+function startHeroRotation() {
+  if (rotateTimer != null || mediaLibrary.length < 2) return
+
+  rotateTimer = window.setInterval(() => {
+    if (document.hidden) return
+    showRandomHeroMedia()
+  }, ROTATE_MS)
+}
+
 async function fetchHeroMediaFromDatabase() {
   if (!supabase) return []
 
@@ -171,17 +238,18 @@ async function fetchHeroMediaFromDatabase() {
     .from(MEDIA_TABLE)
     .select("id, video_url, artist_name, created_at")
     .order("id", { ascending: true })
-    .limit(5)
 
   if (error) {
     console.warn("LOOPMedia could not be loaded:", error.message)
     return []
   }
 
-  return data ?? []
+  return (data ?? []).filter(isPlayable)
 }
 
 export function playHeroMedia() {
+  siteReady = true
+
   slots().forEach((slot) => {
     const video = slot.querySelector("video")
     if (video?.src) video.play().catch(() => {})
@@ -189,9 +257,12 @@ export function playHeroMedia() {
     const iframe = slot.querySelector("iframe")
     if (iframe?.src) iframe.src = iframe.src
   })
+
+  startHeroRotation()
 }
 
 export async function initMediaDisplay() {
-  const items = await fetchHeroMediaFromDatabase()
-  fillHeroMedia(items)
+  mediaLibrary = await fetchHeroMediaFromDatabase()
+  showRandomHeroMedia()
+  if (siteReady) startHeroRotation()
 }
