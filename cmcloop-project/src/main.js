@@ -168,7 +168,8 @@ document.querySelector("#app").innerHTML = `
             Johns Hopkins University Sesquicentennial Artistic Lens Awards.
         </p>
         <p class="footer-details">
-            <a href="https://creativemedia.jhu.edu">Creative Media Center</a> | <a href="https://www.jhu.edu/150/">Johns Hopkins University Sesquicentennial</a>
+            <a href="https://students.jhu.edu/student-life/get-involved/arts-innovation/creative-media-center/">
+            Creative Media Center</a> | <a href="https://150.jhu.edu/">Johns Hopkins University Sesquicentennial</a>
         </p>
     </footer>
 </div>
