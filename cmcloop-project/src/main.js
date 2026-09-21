@@ -150,6 +150,11 @@ document.querySelector("#app").innerHTML = `
       
         </p>
         <br>
+        <p>
+        Selected works will be presented as part of LOOP from November 2–20, 2026 in the Bloomberg Student Center.
+        Submissions will be reviewed on a rolling basis through September 30, 2026 until November 20, 2026.
+        </p>
+        <br>
         <br>
         <a
         class="button"
