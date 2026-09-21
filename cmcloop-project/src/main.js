@@ -66,7 +66,7 @@ document.querySelector("#app").innerHTML = `
 
             <p class="description">
 
-                Open Call for Time-Based Media
+                ★ Open Call for Time-Based Media ★
 
             </p>
 
