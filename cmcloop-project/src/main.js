@@ -167,6 +167,9 @@ document.querySelector("#app").innerHTML = `
             LOOP is presented by the Johns Hopkins Creative Media Center with support from the 
             Johns Hopkins University Sesquicentennial Artistic Lens Awards.
         </p>
+        <p class="footer-details">
+            <a href="https://creativemedia.jhu.edu">Creative Media Center</a> | <a href="https://www.jhu.edu/150/">Johns Hopkins University Sesquicentennial</a>
+        </p>
     </footer>
 </div>
 `
