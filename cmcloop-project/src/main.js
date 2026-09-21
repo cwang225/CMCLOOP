@@ -66,8 +66,7 @@ document.querySelector("#app").innerHTML = `
 
             <p class="description">
 
-                A month-long exhibition
-                exploring time-based media.
+                Open Call for Time-Based Media
 
             </p>
 
@@ -78,6 +77,33 @@ document.querySelector("#app").innerHTML = `
         </div>
 
     </header>
+
+    <section class="about-intro">
+        <h2>
+            What is LOOP?
+        </h2>
+        <br>
+        <p>
+            In celebration of Johns Hopkins University’s 150th anniversary, 
+            the Creative Media Center invites the Hopkins community to submit work for LOOP,
+            an exhibition of time-based media taking place November 2–20, 2026 in the Bloomberg Student Center
+        </p>
+        <br>
+        <p>
+            Supported by a Johns Hopkins University Sesquicentennial Artistic Lens Award, LOOP brings together 
+            creative work from across the university as part of a yearlong celebration reflecting on Hopkins’ past, 
+            present, and future.
+        </p>
+        <br>
+        <p>
+            This exhibition will be a shared space for moving-image and time-based work across disciplines. 
+            Rather than a conventional screening program, the exhibition will transform the space into an 
+            environment of simultaneous and recurring works, using projections, displays, and movable surfaces 
+            throughout the exhibition space.
+        </p>
+        <br>
+
+    </section>
 
     <section class="about">
 
@@ -93,7 +119,6 @@ document.querySelector("#app").innerHTML = `
         LOOP is organized, maintained, and run by the JHU Creative Media Center (CMC).
         LOOP hopes to showcase the amazing art of our students. The CMC supports student
         innovation and creativity through our wide variety of resources and opportunities.
-
         </p>
 
         <figure class="about-image-wrap">
@@ -115,10 +140,14 @@ document.querySelector("#app").innerHTML = `
         <br>
 
         <p>
-
-            Be a part of LOOP! Submit your work by clicking on the button below. Students, faculty, and alumni are all welcome to submit!
-            We look forward to seeing your work!
-
+        We invite students, alumni, faculty, and staff from across Johns Hopkins to share work for LOOP.
+        We welcome video, animation, experimental film, generative work, audiovisual work, documentation, 
+        and other forms of screen- or projection-based media. Work may be narrative, abstract, documentary, 
+        experimental, research-based, or difficult to categorize. Whether you regularly make time-based media 
+        or have a project that simply feels at home in this format, we encourage you to submit. Both short- and 
+        long-form works are welcome, work does not need to have been created specifically for LOOP, and multiple 
+        submissions are encouraged!
+      
         </p>
         <br>
         <br>
@@ -127,7 +156,7 @@ document.querySelector("#app").innerHTML = `
 
         href="https://docs.google.com/forms/d/e/1FAIpQLSfu_jv613FNZqcllwYXLcni7fPRFv6mFQRqSQZucV_j6D06Bw/viewform?usp=publish-editor">
 
-        Open Submission Form
+        Submit your work!
 
         </a>
 
@@ -135,8 +164,8 @@ document.querySelector("#app").innerHTML = `
 
     <footer class="site-footer">
         <p class="footer-message">
-            LOOP is presented by the JHU Creative Media Center.
-            Come by, say hello, and share what you are making.
+            LOOP is presented by the Johns Hopkins Creative Media Center with support from the 
+            Johns Hopkins University Sesquicentennial Artistic Lens Awards.
         </p>
     </footer>
 </div>
@@ -148,7 +177,7 @@ const site = document.querySelector("#site")
 const scribble = initScribble(document.querySelector("#intro-scribble"))
 
 function initSectionReveal() {
-    const sections = document.querySelectorAll(".about, #submit")
+    const sections = document.querySelectorAll(".about-intro, .about, #submit")
     const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
             entry.target.classList.toggle("is-visible", entry.isIntersecting)

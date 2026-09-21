@@ -308,6 +308,11 @@ section{
   z-index:2;
 }
 
+.about-intro{
+  margin-bottom:6rem;
+}
+
+.about-intro :is(h2, p),
 .about :is(h2, p, .about-image-wrap),
 #submit :is(h2, p, .button){
   opacity:0;
@@ -315,12 +320,14 @@ section{
   transition:opacity 0.9s ease, transform 0.9s ease;
 }
 
+.about-intro.is-visible h2,
 .about.is-visible h2,
 #submit.is-visible h2{
   opacity:1;
   transform:none;
 }
 
+.about-intro.is-visible p,
 .about.is-visible p,
 #submit.is-visible p{
   opacity:1;
@@ -341,6 +348,7 @@ section{
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .about-intro :is(h2, p),
   .about :is(h2, p, .about-image-wrap),
   #submit :is(h2, p, .button){
     opacity:1;
@@ -362,7 +370,7 @@ section{
   inset:0;
   z-index:0;
   pointer-events:none;
-  background-image:url("./assets/textureScreen.jpeg");
+  background-image:url("./assets/staticGIF.gif");
   background-size:cover;
   background-position:center;
   background-repeat:no-repeat;
